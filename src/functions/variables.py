@@ -8,9 +8,9 @@ class domainVars:
    Lref = 0.0
 
 class flowVars:
-   Re = 0.0
    Uref = 0.0
    nu = 0.0	# kinematic viscosity
+   Re = 0.0	# Reynolds number
    p = []       # kinematic pressure: used for both dimensional and non-dimensional forms
    u = []       # u velocity: used for both dimensional and non-dimensional forms
    v = []       # v velocity: used for both dimensional and non-dimensional forms
@@ -24,3 +24,6 @@ class FDM:
    F = [None] * 3
    # diffusive flux vector
    D = [None] * 3
+   
+   # Q vector for explicit time integration
+   Q = [None] * 3

@@ -1,6 +1,6 @@
 #grid dimension
-iDim            10
-jDim		10
+iDim            5
+jDim		5
 xmin            0
 xmax            10
 ymin            0
@@ -12,12 +12,12 @@ uRight		0.0
 vRight		0.0
 uBottom		0.0
 vBottom		0.0
-uUp		2.0
+uUp		15.0
 vUp		0.0
 # fluid kinematic properties
-Re		100.0
+nu		1.0
 pInit		0.0
 #simulation setup
-maxIter         10
+maxIter         3
 Courant         0.5
-Beta		1.0
+Beta		0.7
