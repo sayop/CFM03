@@ -1,5 +1,6 @@
 import numpy as np
 from solutionMethod import *
+from post import *
 import time
 
 def timeIntegrate(inputDict):
@@ -8,6 +9,10 @@ def timeIntegrate(inputDict):
    imax    = int(inputDict['iDim'])
    jmax    = int(inputDict['jDim'])
    maxIter = int(inputDict['maxIter'])
+
+   # initialize residual variables for p, u, and v
+   residualInit = np.zeros(3)
+   residual     = np.zeros(3)
 
    # start to count time for calculting computation performance
    start = time.clock()
@@ -29,23 +34,44 @@ def timeIntegrate(inputDict):
       populateFluxVectors(inputDict)
       
       # find dt with stability condition
-      dt = 0.001
-      t += dt
-      print "|- nIter = ", nIter, " dt = ", dt
+      dt = updateTimeStep(inputDict)
 
       # update Q vector for explicit time integration
       updateQvector(inputDict, dt)
 
       # update primative vector U
-      for n in range(3):
-         for j in range(jmax-1):
-            if j == 0: continue
-            for i in range(imax-1):
-               if i == 0: continue
-               FDM.PHI[n][i,j] += dt * FDM.Q[n][i,j]
+      for j in range(jmax):
+         for i in range(imax):
+            flowVars.p[i,j] += dt * FDM.Q[0][i,j]
+            flowVars.u[i,j] += dt * FDM.Q[1][i,j]
+            flowVars.v[i,j] += dt * FDM.Q[2][i,j]
 
-      #print FDM.PHI[1]
-      print flowVars.u
+      # compute residual value to verify convergence
+      residual = computeResidual(imax, jmax, dt, FDM.Q)
+      if nIter == 1:
+         residualInit = residual
+      # only track residual for u-velocity
+      resNorm = residual[1] / residualInit[1]
+
+      t += dt
+      print "|- nIter = %s" % nIter, " dt = %.4f" % dt, "u-residual = %.4f" % resNorm
 
       if (nIter >= maxIter): break
 
+   # Dimensionalize flow and domain variables
+   dimensionalize(inputDict, 1, 1)
+
+   # plot contour of artificial pressure
+   pltFile = 'p_contour.png'
+   phi = flowVars.p
+   phiMin = phi.min()
+   phiMax = phi.max()
+   plotContour(domainVars.x, domainVars.y, phi, phiMin, phiMax, pltFile)
+
+   # plot contour of velocity magnitude
+   pltFile = 'u_contour.png'
+   flowVars.Umag = np.sqrt(flowVars.u ** 2 + flowVars.v ** 2)
+   phi = flowVars.Umag
+   phiMin = phi.min()
+   phiMax = phi.max()
+   plotContour(domainVars.x, domainVars.y, phi, phiMin, phiMax, pltFile)

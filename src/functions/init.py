@@ -13,16 +13,11 @@ def initFlowVars(inputDict):
    flowVars.u    = np.zeros((imax,jmax))
    flowVars.v    = np.zeros((imax,jmax))
 
-   # Populate primitive variables in solution vector of PHI
-   FDM.PHI[0] = flowVars.p
-   FDM.PHI[1] = flowVars.u
-   FDM.PHI[2] = flowVars.v
-
-
    # Evaluate reference Re number
    flowVars.Re = flowVars.Uref * domainVars.Lref / flowVars.nu
    print "# - Reference Reynolds number: Re = ", flowVars.Re
 
+   # Populate boundary values that is specified by user in inputs.in
    updateBC(inputDict,imax,jmax)
 
 

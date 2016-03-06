@@ -14,6 +14,7 @@ class flowVars:
    p = []       # kinematic pressure: used for both dimensional and non-dimensional forms
    u = []       # u velocity: used for both dimensional and non-dimensional forms
    v = []       # v velocity: used for both dimensional and non-dimensional forms
+   Umag = []    # velocity magnitude
 
 class FDM:
    # solution vector: will store 3 elemetns of primitive variables: p, u, v 
