@@ -11,6 +11,7 @@ def timeIntegrate(inputDict):
    maxIter = int(inputDict['maxIter'])
    beta    = float(inputDict['Beta'])
    residualMin = float(inputDict['residualMin'])
+   nIterWrite  = int(inputDict['nIterWrite'])
 
    # initialize residual variables for p, u, and v
    residualInit = np.zeros(3)
@@ -59,6 +60,9 @@ def timeIntegrate(inputDict):
       MachX, MachY = computeMaximumMach(imax, jmax, beta)
       print "|- nIter = %s" % nIter, ", dt = %.4f" % dt, ", Maximum Mach_x = %.4f" % MachX, ", Maximum Mach_y = %.4f" % MachY, ", u-residual = %.4f" % resNorm
 
+      if (nIter % nIterWrite == 0):
+         plotStreamLine(domainVars.x, domainVars.y, flowVars.u, flowVars.v, nIter)
+
       if (nIter >= maxIter or resNorm <= residualMin): break
 
    # Dimensionalize flow and domain variables
@@ -80,5 +84,4 @@ def timeIntegrate(inputDict):
    plotContour(domainVars.x, domainVars.y, phi, phiMin, phiMax, pltFile)
 
    # plot streamline of velocity
-   pltFile = 'streamLine_contour.png'
-   plotStreamLine(domainVars.x, domainVars.y, flowVars.u, flowVars.v, pltFile)
+   plotStreamLine(domainVars.x, domainVars.y, flowVars.u, flowVars.v, nIter)

@@ -37,7 +37,8 @@ def plotContour(x,y,phi,phiMin,phiMax,pltFile):
    print "%s DONE!!" % (pltFile)
    plt.show()
 
-def plotStreamLine(x,y,U,V,pltFile):
+def plotStreamLine(x,y,U,V,nIter):
+   pltFile = 'streamLine_%5.5d.png' % int(nIter)
    x = np.asarray(x)
    y = np.asarray(y)
    U = np.swapaxes(U,1,0)

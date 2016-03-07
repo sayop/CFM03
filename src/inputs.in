@@ -1,6 +1,6 @@
 #grid dimension
-iDim            50
-jDim		50
+iDim            40
+jDim		40
 xmin            0
 xmax            10
 ymin            0
@@ -22,3 +22,5 @@ maxIter         10000
 Courant         0.1
 Beta		0.5
 residualMin	0.01
+#Post-Process
+nIterWrite      1000
