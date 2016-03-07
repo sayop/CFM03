@@ -9,6 +9,7 @@ def timeIntegrate(inputDict):
    imax    = int(inputDict['iDim'])
    jmax    = int(inputDict['jDim'])
    maxIter = int(inputDict['maxIter'])
+   beta    = float(inputDict['Beta'])
 
    # initialize residual variables for p, u, and v
    residualInit = np.zeros(3)
@@ -54,7 +55,8 @@ def timeIntegrate(inputDict):
       resNorm = residual[1] / residualInit[1]
 
       t += dt
-      print "|- nIter = %s" % nIter, " dt = %.4f" % dt, "u-residual = %.4f" % resNorm
+      MachX, MachY = computeMaximumMach(imax, jmax, beta)
+      print "|- nIter = %s" % nIter, ", dt = %.4f" % dt, ", Maximum Mach_x = %.4f" % MachX, ", Maximum Mach_y = %.4f" % MachY, ", u-residual = %.4f" % resNorm
 
       if (nIter >= maxIter): break
 
@@ -62,16 +64,20 @@ def timeIntegrate(inputDict):
    dimensionalize(inputDict, 1, 1)
 
    # plot contour of artificial pressure
-   pltFile = 'p_contour.png'
-   phi = flowVars.p
-   phiMin = phi.min()
-   phiMax = phi.max()
-   plotContour(domainVars.x, domainVars.y, phi, phiMin, phiMax, pltFile)
+   #pltFile = 'p_contour.png'
+   #phi = flowVars.p
+   #phiMin = phi.min()
+   #phiMax = phi.max()
+   #plotContour(domainVars.x, domainVars.y, phi, phiMin, phiMax, pltFile)
 
    # plot contour of velocity magnitude
-   pltFile = 'u_contour.png'
+   pltFile = 'Umag_contour.png'
    flowVars.Umag = np.sqrt(flowVars.u ** 2 + flowVars.v ** 2)
    phi = flowVars.Umag
    phiMin = phi.min()
    phiMax = phi.max()
    plotContour(domainVars.x, domainVars.y, phi, phiMin, phiMax, pltFile)
+
+   # plot streamline of velocity
+   pltFile = 'streamLine_contour.png'
+   plotStreamLine(domainVars.x, domainVars.y, flowVars.u, flowVars.v, pltFile)

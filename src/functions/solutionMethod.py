@@ -28,6 +28,8 @@ def dimensionalize(inputDict, idomain, iflow):
       flowVars.p = flowVars.p * Uref ** 2
 
 def populateFluxVectors(inputDict):
+   # Make sure that all the flux vectors' elements should be evaluated 
+   # with non-dimensionalized domain and flow variables.
    beta = float(inputDict['Beta'])
    imax = int(inputDict['iDim'])
    jmax = int(inputDict['jDim'])
@@ -162,3 +164,14 @@ def computeResidual(imax, jmax, dt, Q):
       res[n] = np.sqrt( res[n] / (imax*jmax) )
 
    return res
+
+
+def computeMaximumMach(imax, jmax, beta):
+   Usqr = flowVars.u ** 2
+   Vsqr = flowVars.v ** 2
+   Asqr    = 1.0 / beta
+   MachX = np.sqrt( Usqr / Asqr )
+   MachX = MachX.max()
+   MachY = np.sqrt( Vsqr / Asqr )
+   MachY = MachY.max()
+   return MachX, MachY

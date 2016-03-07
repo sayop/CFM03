@@ -1,6 +1,6 @@
 #grid dimension
-iDim            10
-jDim		10
+iDim            50
+jDim		50
 xmin            0
 xmax            10
 ymin            0
@@ -18,6 +18,6 @@ vUp		0.0
 nu		1.0
 pInit		101325.0
 #simulation setup
-maxIter         1000
+maxIter         2200
 Courant         0.1
 Beta		0.5
