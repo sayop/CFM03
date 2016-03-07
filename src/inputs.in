@@ -18,6 +18,7 @@ vUp		0.0
 nu		1.0
 pInit		101325.0
 #simulation setup
-maxIter         2200
+maxIter         5000
 Courant         0.1
 Beta		0.5
+residualMin	0.01
