@@ -12,6 +12,7 @@ def timeIntegrate(inputDict):
    beta    = float(inputDict['Beta'])
    residualMin = float(inputDict['residualMin'])
    nIterWrite  = int(inputDict['nIterWrite'])
+   nOrderTime  = int(inputDict['nOrderTime'])
 
    # initialize residual variables for p, u, and v
    residualInit = np.zeros(3)
@@ -43,17 +44,18 @@ def timeIntegrate(inputDict):
       updateQvector(inputDict, dt)
 
       # update primative vector U
-      for j in range(jmax):
-         for i in range(imax):
-            flowVars.p[i,j] += dt * FDM.Q[0][i,j]
-            flowVars.u[i,j] += dt * FDM.Q[1][i,j]
-            flowVars.v[i,j] += dt * FDM.Q[2][i,j]
+      if nOrderTime == 1:
+         for j in range(jmax):
+            for i in range(imax):
+               flowVars.p[i,j] += dt * FDM.Q[0][i,j]
+               flowVars.u[i,j] += dt * FDM.Q[1][i,j]
+               flowVars.v[i,j] += dt * FDM.Q[2][i,j]
 
       # compute residual value to verify convergence
       residual = computeResidual(imax, jmax, dt, FDM.Q)
       if nIter == 1:
          residualInit = residual
-      # only track residual for u-velocity
+      # trace residual for u-velocity
       resNorm = residual[1] / residualInit[1]
 
       t += dt
@@ -61,9 +63,17 @@ def timeIntegrate(inputDict):
       print "|- nIter = %s" % nIter, ", dt = %.4f" % dt, ", Maximum Mach_x = %.4f" % MachX, ", Maximum Mach_y = %.4f" % MachY, ", u-residual = %.4f" % resNorm
 
       if (nIter % nIterWrite == 0):
+         dimensionalize(inputDict, 1, 1)
          plotStreamLine(domainVars.x, domainVars.y, flowVars.u, flowVars.v, nIter)
+         plotContour(domainVars.x, domainVars.y, flowVars.u, flowVars.v, nIter)
+         nondimensionalize(inputDict, 1, 1)
 
       if (nIter >= maxIter or resNorm <= residualMin): break
+
+   #
+   # time elapsed:
+   elapsedTime = (time.clock() - start)
+   print "## Elapsed time: ", elapsedTime
 
    # Dimensionalize flow and domain variables
    dimensionalize(inputDict, 1, 1)

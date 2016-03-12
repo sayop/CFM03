@@ -14,6 +14,9 @@ class flowVars:
    p = []       # kinematic pressure: used for both dimensional and non-dimensional forms
    u = []       # u velocity: used for both dimensional and non-dimensional forms
    v = []       # v velocity: used for both dimensional and non-dimensional forms
+   po = []
+   uo = []
+   vo = []
    Umag = []    # velocity magnitude
 
 class FDM:
