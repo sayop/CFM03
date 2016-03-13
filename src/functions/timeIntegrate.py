@@ -14,12 +14,18 @@ def timeIntegrate(inputDict):
    nIterWrite  = int(inputDict['nIterWrite'])
    nOrderTime  = int(inputDict['nOrderTime'])
 
+   if nOrderTime == 2:
+      pNew = np.zeros((imax,jmax))
+      uNew = np.zeros((imax,jmax))
+      vNew = np.zeros((imax,jmax))
+
    # initialize residual variables for p, u, and v
    residualInit = np.zeros(3)
    residual     = np.zeros(3)
 
    # start to count time for calculting computation performance
    start = time.clock()
+
 
    # Non-dimensionalize flow and domain variables
    nondimensionalize(inputDict, 1, 1)
@@ -44,12 +50,32 @@ def timeIntegrate(inputDict):
       updateQvector(inputDict, dt)
 
       # update primative vector U
-      if nOrderTime == 1:
+      if nOrderTime == 1 or nIter == 1:
          for j in range(jmax):
             for i in range(imax):
                flowVars.p[i,j] += dt * FDM.Q[0][i,j]
                flowVars.u[i,j] += dt * FDM.Q[1][i,j]
                flowVars.v[i,j] += dt * FDM.Q[2][i,j]
+      if nOrderTime == 2:
+         if nIter > 1:
+            # New values: n+1 time level
+            for j in range(jmax):
+               for i in range(imax):
+                  pNew[i,j] = pOld[i,j] + 2.0*dt * FDM.Q[0][i,j]
+                  uNew[i,j] = uOld[i,j] + 2.0*dt * FDM.Q[1][i,j]
+                  vNew[i,j] = vOld[i,j] + 2.0*dt * FDM.Q[2][i,j] 
+         # Old values: n-1 time level
+         pOld = flowVars.p
+         uOld = flowVars.u
+         vOld = flowVars.v
+         if nIter > 1:
+            flowVars.p = pNew
+            flowVars.u = uNew
+            flowVars.v = vNew
+
+
+      # update boundary condition for pressure only
+      updatePressureBC(imax, jmax)
 
       # compute residual value to verify convergence
       residual = computeResidual(imax, jmax, dt, FDM.Q)
@@ -60,7 +86,7 @@ def timeIntegrate(inputDict):
 
       t += dt
       MachX, MachY = computeMaximumMach(imax, jmax, beta)
-      print "|- nIter = %s" % nIter, ", dt = %.4f" % dt, ", Maximum Mach_x = %.4f" % MachX, ", Maximum Mach_y = %.4f" % MachY, ", u-residual = %.4f" % resNorm
+      print "|- nIter = %s" % nIter, ", t = %.6f" % t, ", dt = %.6f" % dt, ", Maximum Mach_x = %.4f" % MachX, ", Maximum Mach_y = %.4f" % MachY, ", u-residual = %.4f" % resNorm
 
       if (nIter % nIterWrite == 0):
          dimensionalize(inputDict, 1, 1)
@@ -86,12 +112,12 @@ def timeIntegrate(inputDict):
    #plotContour(domainVars.x, domainVars.y, phi, phiMin, phiMax, pltFile)
 
    # plot contour of velocity magnitude
-   pltFile = 'Umag_contour.png'
-   flowVars.Umag = np.sqrt(flowVars.u ** 2 + flowVars.v ** 2)
-   phi = flowVars.Umag
-   phiMin = phi.min()
-   phiMax = phi.max()
-   plotContour(domainVars.x, domainVars.y, phi, phiMin, phiMax, pltFile)
+   #pltFile = 'Umag_contour.png'
+   #flowVars.Umag = np.sqrt(flowVars.u ** 2 + flowVars.v ** 2)
+   #phi = flowVars.Umag
+   #phiMin = phi.min()
+   #phiMax = phi.max()
+   #plotContour(domainVars.x, domainVars.y, phi, phiMin, phiMax, pltFile)
 
    # plot streamline of velocity
    plotStreamLine(domainVars.x, domainVars.y, flowVars.u, flowVars.v, nIter)

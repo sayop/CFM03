@@ -18,10 +18,10 @@ vUp		0.0
 nu		1.0
 pInit		1.0
 #simulation setup
-maxIter         500000
-Courant         0.1
+maxIter         20000000
+Courant         0.5
 Beta		0.5
-residualMin	0.01
+residualMin	0.0001
 nOrderTime	1
 #Post-Process
 nIterWrite      2000

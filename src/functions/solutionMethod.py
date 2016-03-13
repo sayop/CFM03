@@ -7,6 +7,9 @@ def nondimensionalize(inputDict, idomain, iflow):
       Lref = domainVars.Lref
       domainVars.x = domainVars.x / Lref
       domainVars.y = domainVars.y / Lref
+      domainVars.dx = domainVars.dx / Lref
+      domainVars.dy = domainVars.dy / Lref
+
    # iflow: nondimensionalize only flow variables
    if iflow == 1:
       Uref = flowVars.Uref
@@ -19,7 +22,9 @@ def dimensionalize(inputDict, idomain, iflow):
    if idomain == 1:
       Lref = domainVars.Lref
       domainVars.x = domainVars.x * Lref
+      domainVars.dx = domainVars.dx * Lref
       domainVars.y = domainVars.y * Lref
+      domainVars.dy = domainVars.dy * Lref
    # iflow: nondimensionalize only flow variables
    if iflow == 1:
       Uref = flowVars.Uref
@@ -58,7 +63,8 @@ def updateQvector(inputDict, dt):
       if n == 0: 
          # if True, the flux vector will have non-zero value at boundary
          # in order to update the primative variable at such boundary.
-         updateBoundary = True
+         #updateBoundary = True
+         updateBoundary = False
       else:
          updateBoundary = False
       # clean Q vector to store new values
@@ -175,3 +181,35 @@ def computeMaximumMach(imax, jmax, beta):
    MachY = np.sqrt( Vsqr / Asqr )
    MachY = MachY.max()
    return MachX, MachY
+
+
+def updatePressureBC(imax, jmax):
+   # left boundary
+   i = 0
+   for j in range(jmax-1):
+      if j == 0: continue
+      flowVars.p[i,j] = flowVars.p[i+1,j]
+
+   # right boundary
+   i = imax - 1
+   for j in range(jmax-1):
+      if j == 0: continue
+      flowVars.p[i,j] = flowVars.p[i-1,j]
+
+   # bottom boundary
+   j = 0
+   for i in range(imax-1):
+      if i == 0: continue
+      flowVars.p[i,j] = flowVars.p[i,j+1]
+
+   # upper boundary
+   j = jmax - 1
+   for i in range(imax-1):
+      if i == 0: continue
+      flowVars.p[i,j] = flowVars.p[i,j-1]
+
+   # update corner ponints
+   flowVars.p[0,0] = flowVars.p[1,1]
+   flowVars.p[imax-1,0] = flowVars.p[imax-2,1]
+   flowVars.p[0,jmax-1] = flowVars.p[1,jmax-2]
+   flowVars.p[imax-1,jmax-1] = flowVars.p[imax-2,jmax-2]

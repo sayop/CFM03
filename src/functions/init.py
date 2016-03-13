@@ -22,7 +22,7 @@ def initFlowVars(inputDict):
 
 
 def updateBC(inputDict,imax,jmax):
-   # update boundary values in dimensionalized form
+   # update boundary values of u and v in dimensionalized form
    # Left boundary
    flowVars.u[0,:] = float(inputDict['uLeft'])
    flowVars.v[0,:] = float(inputDict['vLeft'])
