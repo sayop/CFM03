@@ -4,7 +4,7 @@ jDim		50
 xmin            0
 xmax            10
 ymin            0
-ymax            10
+ymax            15
 #boundary conditions
 uLeft		0.0
 vLeft		0.0
@@ -20,8 +20,8 @@ pInit		1.0
 #simulation setup
 maxIter         20000000
 Courant         0.5
-Beta		0.5
-residualMin	0.0001
+Beta		0.7
+residualMin	0.00005
 nOrderTime	1
 #Post-Process
 nIterWrite      2000

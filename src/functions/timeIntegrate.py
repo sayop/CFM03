@@ -86,7 +86,7 @@ def timeIntegrate(inputDict):
 
       t += dt
       MachX, MachY = computeMaximumMach(imax, jmax, beta)
-      print "|- nIter = %s" % nIter, ", t = %.6f" % t, ", dt = %.6f" % dt, ", Maximum Mach_x = %.4f" % MachX, ", Maximum Mach_y = %.4f" % MachY, ", u-residual = %.4f" % resNorm
+      print "|- nIter = %s" % nIter, ", t = %.6f" % t, ", dt = %.6f" % dt, ", Maximum Mach_x = %.4f" % MachX, ", Maximum Mach_y = %.4f" % MachY, ", u-residual = %.5f" % resNorm
 
       if (nIter % nIterWrite == 0):
          dimensionalize(inputDict, 1, 1)
