@@ -79,6 +79,7 @@ def updateQvector(inputDict, dt):
       FDM.Q[n] += centralFiniteDifference(FDM.D[n],'x',2,updateBoundary) / flowVars.Re
       FDM.Q[n] += centralFiniteDifference(FDM.D[n],'y',2,updateBoundary) / flowVars.Re
 
+
 def centralFiniteDifference(phi, direction, nOrder, updateBoundary):
    imax = len(phi[:,0])
    jmax = len(phi[0,:])

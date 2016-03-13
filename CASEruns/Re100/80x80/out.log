@@ -1,0 +1,7 @@
+|- nIter = 52091 , t = 17.605475 , dt = 0.000337 , Maximum Mach_x = 0.7071 , Maximum Mach_y = 0.3726 , u-residual = 0.00005
+|- nIter = 52092 , t = 17.605812 , dt = 0.000337 , Maximum Mach_x = 0.7071 , Maximum Mach_y = 0.3726 , u-residual = 0.00005
+## Elapsed time:  3588.962736
+streamLine_52092.png DONE!!
+v-velocity_in_x.csv DONE!!
+u-velocity_in_y.csv DONE!!
+u-residualLog.csv DONE!!

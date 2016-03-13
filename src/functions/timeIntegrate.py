@@ -22,6 +22,7 @@ def timeIntegrate(inputDict):
    # initialize residual variables for p, u, and v
    residualInit = np.zeros(3)
    residual     = np.zeros(3)
+   UresidualLog  = []
 
    # start to count time for calculting computation performance
    start = time.clock()
@@ -56,6 +57,7 @@ def timeIntegrate(inputDict):
                flowVars.p[i,j] += dt * FDM.Q[0][i,j]
                flowVars.u[i,j] += dt * FDM.Q[1][i,j]
                flowVars.v[i,j] += dt * FDM.Q[2][i,j]
+
       if nOrderTime == 2:
          if nIter > 1:
             # New values: n+1 time level
@@ -83,6 +85,7 @@ def timeIntegrate(inputDict):
          residualInit = residual
       # trace residual for u-velocity
       resNorm = residual[1] / residualInit[1]
+      UresidualLog.append(resNorm)
 
       t += dt
       MachX, MachY = computeMaximumMach(imax, jmax, beta)
@@ -121,3 +124,13 @@ def timeIntegrate(inputDict):
 
    # plot streamline of velocity
    plotStreamLine(domainVars.x, domainVars.y, flowVars.u, flowVars.v, nIter)
+
+   # trace center-line data to be compared to the Ghia's paper data
+   nondimensionalize(inputDict, 1, 1)
+   traceCenterLineData('x', flowVars.v, 'v-velocity_in_x.csv')
+   traceCenterLineData('y', flowVars.u, 'u-velocity_in_y.csv')
+   dimensionalize(inputDict, 1, 1)
+
+   # write a log file for u-residual
+   csvFile = 'u-residualLog.csv'
+   logResidual(UresidualLog, csvFile)
