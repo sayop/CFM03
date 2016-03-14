@@ -57,6 +57,7 @@ def timeIntegrate(inputDict):
                flowVars.p[i,j] += dt * FDM.Q[0][i,j]
                flowVars.u[i,j] += dt * FDM.Q[1][i,j]
                flowVars.v[i,j] += dt * FDM.Q[2][i,j]
+
       if nOrderTime == 2:
          if nIter > 1:
             # New values: n+1 time level
