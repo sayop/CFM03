@@ -6,7 +6,7 @@
 Computational Fluid Mechanics: Third Computer Project
 =====================================================
 
-This document is online available. The *pdf* format of this documentation may have some inappropriate image size and not-well organized order of image and its description. You are recommended to see this documentation visiting http://cfm03-gatech.readthedocs.org.
+This document is online available. The *pdf* format of this documentation may have some inappropriate image size and not-well organized order of image and its description. You are recommended to see this documentation visiting http://cfm03.readthedocs.org.
 
 Contents:
 
