@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import csv
 
 # compute error by comparing the numerical solution of v-velocity to ghia's data.
-ghiaFile = '../plot_Vvel_along_Horizontal_Line/ghia_Re100.csv'
-dataFile = '../../v-velocity_in_x.csv'
+ghiaFile = '../plot_Uvel_along_Vetical_Line/ghia_Re100.csv'
+dataFile = '../../u-velocity_in_y.csv'
 
 xList1 = []
 xList2 = []
@@ -16,16 +16,16 @@ vVelList2 = []
 with open(ghiaFile, 'rb') as csvfile:
    reader = csv.DictReader(csvfile)
    for row in reader:
-      xList1.append(float(row['x']))
-      vVelList1.append(float(row['v-velocity']))
+      xList1.append(float(row['y']))
+      vVelList1.append(float(row['u-velocity']))
 
 
 # read my simulation data
 with open(dataFile, 'rb') as csvfile:
    reader = csv.DictReader(csvfile)
    for row in reader:
-      xList2.append(float(row['x']))
-      vVelList2.append(float(row['v-velocity']))
+      xList2.append(float(row['y']))
+      vVelList2.append(float(row['u-velocity']))
 
 sol = []
 for x in xList1:
