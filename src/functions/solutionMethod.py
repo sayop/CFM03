@@ -43,7 +43,7 @@ def populateFluxVectors(inputDict):
    FDM.E[0] = flowVars.u / beta
    FDM.E[1] = flowVars.u ** 2 + flowVars.p
    FDM.E[2] = flowVars.u * flowVars.v
-   
+  
    # Populate F vector
    FDM.F[0] = flowVars.v / beta
    FDM.F[1] = flowVars.u * flowVars.v

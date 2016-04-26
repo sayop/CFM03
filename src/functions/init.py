@@ -21,6 +21,7 @@ def initFlowVars(inputDict):
    updateBC(inputDict,imax,jmax)
 
 
+
 def updateBC(inputDict,imax,jmax):
    # update boundary values of u and v in dimensionalized form
    # Left boundary
